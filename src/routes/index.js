@@ -8,6 +8,6 @@ const sessionRoutes = require('./sessions.routes');
 
 // Define os pontos de entrada para as rotas expessíficas
 routes.use('/', usersRouter); 
-routes.use('/', sessionRoutes);
+routes.use('/sessions', sessionRoutes);
 
 module.exports = routes; 
