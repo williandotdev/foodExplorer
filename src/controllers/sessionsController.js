@@ -15,6 +15,7 @@ class SessionsController{
         const confirmPassword = await compare(password, user.password);
 
         if(!confirmPassword){
+            //return response.status(401).json(user);
             return response.status(401).json("Email e/ou senha incorreta!")
         }
 

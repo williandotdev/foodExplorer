@@ -3,11 +3,15 @@ const routes = Router(); // Cria uma instância do Router do Express.
 
 // Importa os arquivos de rotas específicas.
 const usersRouter = require('./users.routes');
-const sessionRoutes = require('./sessions.routes');
+const sessionRouter = require('./sessions.routes');
+const ingredientsRouter = require('./ingredients.routes');
+const categoryRouter = require('./category.routes');
 
 
 // Define os pontos de entrada para as rotas expessíficas
 routes.use('/', usersRouter); 
-routes.use('/sessions', sessionRoutes);
+routes.use('/sessions', sessionRouter);
+routes.use('/ingredients', ingredientsRouter);
+routes.use('/category', categoryRouter);
 
 module.exports = routes; 

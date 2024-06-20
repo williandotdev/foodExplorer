@@ -11,9 +11,7 @@ async create(request, response){
 
 
         await knex("users").insert({name: name, email: email, password: hashedPassword});
-        return response.status(201).json();
-    
-
+        return response.status(201).json("Usuário criado com sucesso!");
 }
 
 async index(request, response){
@@ -32,21 +30,21 @@ async update(request, response){
     const user = await knex("users").where({ id: user_id }).first();
         
     if (!user) {
-        throw new AppError("Usuário não encontrado");
+        return response.status(404).json("Usuário não encontrado");
     }
     
     const userWithUpdatedEmail = await knex("users").where({ email: email, delete: false }).first();
 
     if (userWithUpdatedEmail && userWithUpdatedEmail.id !== user_id) {// Se o e-mail já está em uso por outro usuário, lança um erro.
-        throw new AppError("Este e-mail já está em uso.");
+        return response.status(404).json("Este e-mail já está em uso.");
     }
 
-    await knex("users").where({ id: user_id }).update({name: name ?? user.name, email: email ?? user.email, password: password})
+    await knex("users").where({ id: user_id }).update({name: name ?? user.name, email: email ?? user.email})
     
     
      // Se a nova senha for fornecida, mas a senha antiga não, lança um erro.
      if (password && !old_password) {
-        throw new AppError("Você precisa informar a senha antiga para alterar.");
+        return response.status(404).json("Você precisa informar a senha antiga para alterar.");
     }
 
     // Se ambas as senhas (nova e antiga) forem fornecidas, verifica e atualiza.
@@ -54,16 +52,16 @@ async update(request, response){
         // Verifica se a senha antiga está correta.
         const checkOldPassword = await compare(old_password, user.password);
         if (!checkOldPassword) {
-            throw new AppError("A senha antiga não confere!");
+            return response.status(404).json("A senha antiga não confere!");
         }
 
         // Criptografa a nova senha e a atualiza no usuário.
-        user.password = await hash(password, 8);
-        await knex("users").where({ id: user_id }).update({password: password})
+        const hashedPassword = await hash(password, 8);
+        await knex("users").where({ id: user_id }).update({password: hashedPassword})
     }
     
 
-    return response.status(201).json();
+    return response.status(201).json(user);
 }
 
 async delete(request, response){
