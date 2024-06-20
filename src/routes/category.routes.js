@@ -7,10 +7,10 @@ const categoryController = new CategoryController()
 
 CategoryRoutes.use(ensureAuthenticated);
 
-CategoryRoutes.post('/ingredients', categoryController.create);
-CategoryRoutes.get('/ingredients', categoryController.index);
-CategoryRoutes.put('/ingredients', categoryController.update);
-CategoryRoutes.delete('/ingredients', categoryController.delete);
+CategoryRoutes.post('/category', categoryController.create);
+CategoryRoutes.get('/category', categoryController.index);
+CategoryRoutes.put('/category', categoryController.update);
+CategoryRoutes.delete('/category', categoryController.delete);
 
 
 module.exports = CategoryRoutes;
